@@ -1,0 +1,644 @@
+\documentclass[a4paper,12pt,french]{article}
+\usepackage[utf8]{inputenc}   
+\usepackage[francais]{babel}
+\usepackage{setspace}
+\usepackage{centrale}
+\usepackage{amsfonts}%math
+\usepackage{multicol}
+\setlength{\columnsep}{2cm}
+\usepackage{systeme}
+\usepackage{amsmath}
+\usepackage{enumitem}
+
+
+
+
+\hypersetup{
+    pdftitle={Titre à insérer},
+    pdfauthor={Auteur à insérer},
+    pdfsubject={Sujet à insérer},
+    pdfproducer={Conversion PDF à insérer},
+    pdfkeywords={Quelques mots-clés à insérer} %
+}
+
+\DeclareGraphicsRule{.ai}{pdf}{.ai}{} % pour insérer des documents .ai
+\graphicspath{ {./img/} {./eps/}} % pour ne pas avoir à ajouter eps/ton-image.jpg
+
+% ------------- Packages spéciaux, nécessaires pour ce rapport, à insérer ici ------------- 
+
+\usepackage{fancyhdr}
+\fancyhf{} % sets both header and footer to nothing
+\renewcommand{\headrulewidth}{0pt}
+\cfoot{\thepage}
+\pagestyle{fancy}    
+\begin{document}
+
+% --------------------------------------------------------------
+%                       Page de garde
+% --------------------------------------------------------------
+
+\begin{titlepage}
+\begin{center}
+
+\includegraphics[width=0.5\textwidth]{uparis.png}\\[1cm]
+
+{\large Université de Paris - UFR Mathématiques et Informatique}\\[0.5cm]
+
+{\large Projet de Mathématique S2}\\[0.5cm]
+
+% Title
+\rule{\linewidth}{0.5mm} \\[0.4cm]
+{ \huge \bfseries Grands nombres premiers et système RSA \\[0.4cm] }
+\rule{\linewidth}{0.5mm} \\[1.5cm]
+
+% Author and supervisor
+\noindent
+\begin{minipage}{0.4\textwidth}
+  \begin{flushleft} \large
+    \emph{Réalisé par  :}\\
+   M. Amine \textsc{kebouche}\\
+    M\up{me} Malek \textsc{amri}\\
+   
+  \end{flushleft}
+\end{minipage}%
+\begin{minipage}{0.4\textwidth}
+  \begin{flushright} \large
+    \emph{Encadrants :} \\
+    M.~Nasser \textsc{Tebbache}\\
+    
+  \end{flushright}
+\end{minipage}
+
+\vfill
+
+% Bottom of the page
+{\large Version du\\ \today}
+
+\end{center}
+\end{titlepage}
+
+% --------------------------------------------------------------
+%                    Table des matières 
+% --------------------------------------------------------------
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+\newpage
+\thispagestyle{empty}
+\listoffigures
+
+\newpage 
+
+\section{Introduction}
+
+\doublespacing
+La quintessence de l'entrepreneuriat se base sur la création d’un besoin ou bien répondre à un besoin donné.  Trois décennies auparavant, l’humanité ne disposait pas d’internet dans le domaine publique. L’usage des dispositifs de communication et l’outil informatique se démocratise et se répandent progressivement. De nos jours, on  peut s’assurer de l’usage sécurisé d’un traitement de texte online sur Google en jetant un simple coup d’oeil sur l'adresse url.
+
+\vspace{0.5\baselineskip}
+
+\doublespacing
+L’explosion du volume d’échange d'information a engendré des prises de précautions pour stocker, accéder, diffuser et sécuriser les données. L'aspect sécuritaire est primordial ce qui a boosté les recherches dans le domaine de cryptographie.
+
+\vspace{0.5\baselineskip}
+\doublespacing
+En effet, la sécurité informatique, ou la Cybersécurité s’appuie sur la cryptographie à fin de protéger les espaces cyber contre d'éventuelles actions malveillantes. Ceci nécessite la mise en place d’un ensemble de stratégies dont des algorithmes pour évaluer les risques et définir les objectifs de sécurité à atteindre. 
+
+\vspace{0.5\baselineskip}
+
+\doublespacing
+Ainsi, la sécurité informatique est un ensemble de moyens techniques, organisationnels, juridiques et humains utilisés pour garantir la sécurité des systèmes manipulés. Notamment la sécurité des données et des communications qui est assurée principalement par l’utilisation de la Cryptographie (Science de codage), considérée comme étant le noyau de la sécurité informatique.
+
+\newpage 
+
+\section{Histoire et concepts de base }
+
+\doublespacing
+La cryptographie est la science qui utilise les mathématiques pour chiffrer et déchiffrer les données. Elle permet la protection des données stockées ou transmises, à travers des réseaux non sûrs (comme Internet), de telle sorte qu’elles ne puissent être interceptées à l’exception des destinataires convenus. la confidentialité, l'intégrité des données, l'authentification et la non-répudiation constituent les bases fondamentaux de la cryptographie.
+
+\vspace{0.5\baselineskip}
+\doublespacing
+À travers L'histoire de la civilisation humaine, le recours au cryptages des messages a évolué en fonction de l’avancée des sciences et essentiellement des mathématiques. 2000 ans Ac, les Égyptiens utilisaient le cryptage par mot clé pour sécuriser leur communications; il suffisait de disposer dudit mot clé pour pouvoir crypter et décrypter les messages. De plus, Jule César avait recours à la même technique durant l'empire romaine, d'où l'algorithme de césar qui est utilisé dans la cryptographie classique.
+
+\vspace{0.5\baselineskip}
+\doublespacing
+L'avènement des ordinateurs a accéléré l'évolution de la cryptographie et des algorithmes inhérentes . Les techniques d’intrusion ont aussi connu un essor remarquable qui ne cessent d'accroître en efficacité. Par conséquent, la sécurité a connu l’émergence des techniques associées à la cryptographie, telles que le hachage, la signature et la gestion de clés.
+
+\vspace{0.5\baselineskip}
+\doublespacing
+On distingue deux types de chiffrement qui reposent sur deux stratégies différents quand à l’usage de clés de cryptage et de décryptage:
+
+\newpage
+\subsection{Les algorithmes symétriques:}
+
+\singlespacing
+Autrement dit algorithmes à clé secrète qui reposent sur le principe de partager la même clé secrète entre les interlocuteurs afin d’échanger de différentes informations confidentiellement.
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{sym.PNG}
+\caption{Système de cryptage symétrique}
+\label{fig:figure2}
+\end{figure}
+
+\subsection{Les algorithmes asymétriques:}
+\singlespacing
+Ou algorithmes à clé publique qui consiste à générer deux clé distinctes.Une clé publique qui est mise à la disposition de toute personne désirant envoyer une information au propriétaire,et une clé privée qui est utilisé uniquement par le destinataire pour le déchiffrement des messages.
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{asym.PNG}
+\caption{Système de cryptage asymétrique}
+\label{fig:figure2}
+\end{figure}
+
+\newpage
+ 
+\subsection{Systeme cryptographique RSA :}
+\onehalfspacing
+Le principe de clé publique a été proposé en 1976 par Whitfield Diffie et Martin Hellman, et implémenté en 1978 par Rivest, Shamir et Adleman sous la forme de l'algorithme RSA qui est le fruit des recherches académique de l’ MIT, appliqué dans plusieurs domaines de sécurité.
+
+L'algorithme RSA est un systhème de chiffrement asymétrique qui se base sur la difficulté de la factorisation d'un nombre entier en produit de nombres premiers, et la fonction à sens unique qui est une fonction "puissance".\\
+
+Avant de détailler cet algorithme, quelques notions mathématiques sur lesquelles RSA est construit doivent être introduites. 
+
+\section{Prérequis mathématiques :}
+\suparagraph{
+ Dans cette partie on note l'enssemble des nombres relatifs par \mathbb{Z}, et l'enssemble des nombres positifs par \mathbb{Z_n}. }
+\subsection{Généralités sur les nombres premiers:} 
+
+\noindent \textbf{Définition1.}
+Soient \textbf{a} et \textbf{b} deux entiers relatifs ; on dit que \textbf{b} divise \textbf{a} noté \textbf{b|a},  s’il existe un entier \textbf{c} tel que \textbf{a = c.b}.\\
+Exemple: 6|12 car il existe 2 tel que : 12=6\times2
+\vspace{0.5\baselineskip}
+
+\noindent \textbf{Définition2.}
+Un nombre premier est un entier naturel supérieur à 1 dont les seuls diviseur sont 1 et lui-même.
+
+\vspace{0.5\baselineskip}
+\noindent \textbf{Théorème 1.} (D'après EUCLIDE)\\
+Pour tout ensemble fini \textbf{E} de nombres premiers, il existe un nombre premier \textbf{p} qui n’appartient pas à \textbf{E}.\\
+Autrement dit, il existe une infinitée de nombres premiers.
+
+\vspace{0.5\baselineskip}
+
+\noindent \textbf{Théorème 2.}(Décomposition en produit de facteurs premiers)
+\\Tout nombre entier naturel s’écrit comme un produit de nombres premiers; cette décomposition en facteurs premiers est unique (exceptée par réarrangement des facteurs).
+
+\noindent
+Exemple: 600= \mathbf{5^{2}}\times\mathbf{2^{3}}\times3
+ 
+\noindent 
+et il n'admet aucune autre factorisation sous forme de produits de nombres premiers, excepté par réarrangement des facteurs 2,3 et 5.
+
+La décomposition en facteurs premiers est aisée pour de petits nombres, mais elle est très longue pour de grands nombres; La sécurité du système asymétrique RSA est basée sur \textbf{la difficulté de la factorisation de grands nombres.}
+\vspace{0.5\baselineskip}
+
+\subsubsection{Test de primalité:}\\
+\noindent\textbf{Definition 3: } Un test de primalité est un algorithme qui détermine si un nombre entier est premier. \\
+
+
+\noindent \textbf{Algorithme1.} (Test de primalité) Vérifie si un entier N est divisible par l’un des entiers entre 2 et N-1, le cas contraire indique que N est premier.\\
+
+\noindent \textbf{Fonction premier(N)}\\
+\indent Verifier que N \ge 2 \\
+\indent pour\ i\ compris\ entre\ 2\ et\ N-1\\
+\indent \indent si\ i\ divise\ N\\
+\indent \indent \indent Retourner\ Faux \\
+\indent Retourner\ Vrai \\
+
+\noindent \textbf{Le crible d'Eratosthène}\\
+\indent Le crible d'Eratosthène décrit un moyen de calculer la liste des nombres premiers inférieurs à un entuer fixé. La méthode consiste à créer dans un premier temps la liste des entiers compris entre 2 et un entier \textbf{n} puis itérer le processus suivant: \\
+\indent 1- Récupere le premier entier de la liste (Ce nombre est premier)\\
+\indent 2- Retirer de la liste restante les multiples de ce nombre\\
+\indent 3- Tant que la liste n'est pas vide, recommencer à l'étape 1
+\subsubsection{Fonction totient d’Euler:}
+La fonction est définie par : \phi(n)= card (\{m \le n |PGCD(m,n)=1\})\\
+
+En théorie des nombres, la fonction phi d'Euler donne le nombre d’entiers positifs jusqu'à un entier donné n qui sont relativement premiers à n. Autrement dit, c'est le nombre d'entiers k dans l’intervalle 1 = k = n pour lequel le plus grand commun diviseur pgcd(n, k) est égal à 1.\\
+- Si n est premier, alors \phi(n) =n-1.\\
+- De plus, soient\ p\ et q\ deux\ nombres\ premiers\ et\ n=p.q,\ alors:\\
+\indent \indent \indent \phi(n) =\phi(pq) = \phi(p)\phi(q) = (p-1)(q-1)
+
+\subsection{Algorithme d'EUCLIDE étendu:}
+\noindent \textbf{Définition4.}(PGCD)\\
+Le PCGD de deux entiers naturels \textbf{a} et \textbf{b} est le plus grand élément de l’ensemble de leurs diviseurs communs ; on le note \textbf{PGCD(a,b)}.\\
+
+\noindent \textbf{Propriété1:}
+Soient  \textbf{a} et  \textbf{b} deux entiers positifs non nuls (a>b) et  \textbf{r} le reste de la division euclidienne de  \textbf{a} sur  \textbf{b} :  \textbf{a = b.q + r} alors :
+ \textbf{PGCD(a,b) = PGCD(b,r)}
+\\
+
+\noindent
+On calcule le PGCD de deux nombres en utilisant l'algorithme d'EUCLID
+
+\noindent \textbf{Algorithme2.}(EUCLID) Soient \textbf{a} et \textbf{b} deux entiers naturels avec \textbf{a \geq b}:\\
+
+\setlength{\columnseprule}{0.25cm}
+\begin{multicols}{2}
+
+\noindent Fonction Euclide1(a,b)\\
+\indent tant que b \ne 0\\
+\indent\indent t \xleftarrow{} b\\
+\indent\indent b \xleftarrow{} a \ modulo\ b \ (a \% b)\\
+\indent\indent a \xleftarrow{} t\\
+\indent retourner\ a\\
+\\
+
+\noindent Fonction Euclide2 (a, b)\\
+\indent tant que a \ne b \\
+\indent\indent si\ a > b \\
+\indent\indent\indent a \xleftarrow{} a - b \\
+\indent\indent sinon\\
+\indent\indent\indent b \xleftarrow{} b - a \\
+\indent retourner \ a \\
+\end{multicols}
+
+\normalfont
+\noindent Euclide1:  Se base sur la  \textbf{Propriété1} et la divisions successives\\
+Euclide2: Soustractions successives 
+
+
+
+\noindent \textbf{Définition5.}( Deux nombres premiers entre eux)\\
+Soient  \textbf{a} et  \textbf{b} deux entiers positifs non nuls, on dit que \textbf{a} et  \textbf{b} sont prmiers entre eux si \textbf{PGCD(a, b) = 1 }
+
+\noindent
+Exemple : Calculons le PGCD de 61 et 16\\
+\indent\indent 61 = 16 \times 3 +13\\
+\indent\indent 16 = 13 \times 1 + 3\\
+\indent\indent 13 = 3 \times 4 + \textbf{1} \\
+\indent\indent 3 = 1\times 3 + \textbf{\color{red}{0}}\\
+\indent 61 \ et \ 16 \ sont \ premiers\  entre \ eux \ car\  PGCD(61,16)=1
+
+\subsubsection{Théorème de Bézout:}
+\noindent\textbf{Théorème3.} 
+Soient \textbf{a} et \textbf{b} des entiers, il existe des entiers \textbf{u, v} \in \mathbb{Z} \ tels\ que:
+\begin{center}
+\textbf{a.u + b.v = PGCD(a,b)}
+\end{center}
+u,v sont les coeficients de Bézout, il s'obtiennent en remontant l'algorithrme d'Euclide.
+
+\noindent
+Exemple : Calculons les coefficients de Bézout correspondant à PGCD (61,16)
+
+
+\begin{multicols}{2}
+
+\indent\indent 61 = 16 \times 3 +13\\
+\indent\indent 16 = 13 \times 1 + 3\\
+\indent\indent 13 = 3 \times 4 + \textbf{1} \\
+\indent\indent 3 = 1\times 3 + \textbf{\color{red}{0}}\\
+\columnbreak 
+
+\noindent
+\ \ \ 1= 61\times \textbf{\color{red}{5}} + 16\times (\textbf{\color{red}{-19}})\\
+{\color {red}\Uparrow}1= (61 -16\times 3)\times5-16\times 4\\
+{\color {red}\Uparrow} 1= 13 \times 5 - 16\times 4 \\
+{\color {red}\Uparrow} 1= 13 - ( 16 - 13 \times 1)\times 4\\ 
+{\color {red}\Uparrow} 1= 13 - 3 \times 4\\
+\end{multicols}
+
+\noindent Nous avons vu précédemment l'algorithme d'Euclide qui permet de calculer le PGCD de deux nombres entiers, et comment calculer les coeffiecient de Bézout à la main en remontant cet algorithme de bas en haut.\\
+
+\noindent\textbf{L'algorithme d'EUCLIDE étendu} permet de calculer les coefficients de Bézout qui correspondent à deux nombres entiers \textbf{a} et \textbf{b} d'une manièr automatique.
+
+
+\noindent Pour cela, on définit deux suites qui vont aboutir au coefficients de Bézout de \textbf{a} et \textbf{b ( a > b )}
+
+\noindent Soient\ \mathbb{U_n}\ et\ \mathbb{V_n } \ deux\  suites \ réelles\  définies \ par \ leurs\  premiers\  termes\ et\ leurs\ relations\ de\\ réccurences.\\
+Pour \ tout\ entier\  n > 1 :
+
+\begin{multicols}{2}
+
+
+\begin{cases}
+U_0  &=1 \\
+U_1  &=0\\
+U_{n+1} &= U_{n-1} - q_n . U_n
+
+\end{cases}
+\columnbreak
+\begin{cases}
+V_0  &=0 \\
+V_1  &=1\\
+V_{n+1} &= V_{n-1} - q_n . V_n
+\end{cases}
+
+\end{multicols}
+
+Où \mathbb{q_n} \ est\  le\ cotient\ de\ la\ division\ euclidienne\ de\ \[ a_n \] par b_n 
+
+
+\textbf{Algorithme3.}(EUCLID étendu):\\
+
+\indent\indent Fonction Euclide-etendu (a,b)\\
+\indent\indent\indent U \xleftarrow{} 1 ;\indent UU \xleftarrow{} 0\\
+\indent\indent\indent V \xleftarrow{} 0 ;\indent VV \xleftarrow{} 1\\
+\indent\indent\indent Tant\ que\ b \ne 0 \\
+\indent\indent\indent\indent q \xleftarrow{} a/b ;
+\indent c \xleftarrow{} a\\
+\indent\indent\indent\indent a \xleftarrow{} b ;
+\indent b \xleftarrow{} c \% b\\
+\indent\indent\indent\indent d \xleftarrow{} UU ;
+\indent UU \xleftarrow{} x - q.UU\\
+\indent\indent\indent\indent U \xleftarrow{} d ;
+\indent f \xleftarrow{} VV\\
+\indent\indent\indent\indent VV \xleftarrow{}  V - q.VV\\
+\indent\indent\indent\indent  V \xleftarrow{} f\\
+\indent\indent\indent if\ a < 0\\
+\indent\indent\indent\indent a \xleftarrow{} -a ;
+\indent U \xleftarrow{} -U ;
+\indent V \xleftarrow{} -V \\
+\indent\indent\indent retourner\ (a, U, V)\\
+
+\newpage 
+
+\subsection {Inversabilité sur Z_n}
+\subsubsection{Congruences:}
+\singlespacing
+\noindent \textbf{Définition6.}
+\noindent Soit un entier n > 2. On dit que a \textbf{congru} b \textbf{modulo} n si n divise  a-b
+\begin{center}
+et on écrit a \equiv b[n]\\
+Autrement \ dit : a \equiv b[n] \iff  \exists k \in Z\ a = k.n + b  \\
+
+\end{center} 
+\textbf{Proposition:}\\
+\onehalfspacing 
+\ \indent\circ\ a \equiv a (mod \ n),\\
+\indent\circ si\ a \equiv b(mod\ n)\ alors\ b \equiv a(mod\ n)\\
+\indent \circ si\ a \equiv b(mod\ n)\ et\ b \equiv c(mod\ n)\ alors\ a\equiv c(mod\ n)\\
+\indent \circ Si\ a \equiv b(mod\ n)\ et\ c\equiv d (mod\ n)\ alors\ a+c \equiv b+d (mod\ n)\\
+\indent \circ Si\ a \equiv b (mod\ n)\ et\ c\equiv d (mod\ n)\ alors\ a\times c \equiv b\times d (mod\ n)\\
+\indent\circ Si\ a\equiv b (mod\ n)\ alors\ pour\ tout\ k \ge 0 ,\ a^k \equiv b^k (mod\ n)
+
+\noindent Exemple: 17 \equiv 5[6] , \indent 3 \equiv -11[7] 
+
+
+\subsubsection{Inverse modulo n}
+\noindent \textbf{Définition7.}
+\noindent Soit \textbf{a} \in \mathbb{Z}, on\ dit\ que\ \textbf{x} \in \mathbb{Z} \ est\ un\ \textbf{inverse\ de\ a[n]}\ si \\
+\indent\indent\indent\indent ax \equiv 1[n]
+
+\noindent\textbf{Proposition: }\\
+\indent \circ Si\ \textbf{a}\ et\ \textbf{n}\ sont\ premiers\ entre\ eux\ ,\ alors\ a\ admet\ un\ inverse\ modulo\ n \\
+\indent \circ Si\ au\ +\ nv\ =\ 1, (PGCD(a, n) = 1), \ alors\ \textbf{u}\ est\ un\ inverse\ de\ a[n] \\
+
+\noindent Autrement dit: trouver un inverse de a modulo n revient à calculer les coefficients de Bezout associé à (a, n)
+
+\noindent \textbf{Algorithme4.}(Renvoi l'inverse)
+
+\indent Fonction inverse(a, n)\\
+\indent\indent c, u, v = Euclide-etendu(a, n)\\
+\indent\indent si c \ne 1 \\
+\indent\indent \indent retourner\ 0 \\
+\indent\indent sinon\\
+\indent \indent retourner\  u\ modulo\ n \\
+
+\noindent\textbf{Exemple:} Prenons l'exemple de du Théorème3 :
+En aplliquant l'algorithme d'Euclide étendu sur ( 61, 16) on a trouvé : 
+  1= 61\times \textbf{\color{red}{5}} + 16\times (\textbf{\color{red}{-19}})\\
+  tel que PGCD(61,16)=1 \ et 5, et -19 \ sont\ les\ coefficients\ de\ Bezout\\
+  On\ lit\ 5\ est\  \textbf{\color{red}{l'inverse de 61 modulo 16}}.
+
+\subsubsection{Petit théorème de Fermat:}
+\noindent \textbf{Théorème4.}\ Si\ \textbf{p} est un nombre premier et \textbf{a} \in \mathbb{Z}, alors :
+
+\indent \indent \indent \indent\indent \textbf{a^{p} \equiv a [ p ]}
+
+\noindent \textbf{Proposition: } 
+\normalfont
+Si \textbf{p} ne divise pas \textbf{a}, alors: 
+
+\indent \indent \indent \indent\indent \textbf{a^{p-1} \equiv 1 [ p ]}
+
+
+\noindent\textbf{Théorème de Fermat amélioré :}
+\normalfont 
+Soient \textbf{p} et \textbf{q} deux nombres premiers distincts,  et soit \textbf{n=p.q}.\ Pour tout a\in\mathbb{Z}\  tel\ que\  PGCD(a,n)=1\  alors :
+
+
+\indent \indent \indent \indent\indent \textbf{a^{(p-1)(q-1)} \equiv 1 [ n ]}
+
+\normalfont 
+\noindent Le principe du déchiffrement RSA sera basé sur ce petit théorème de Fermat amélioré (Extait du Théorème4), ainsi que la notion de l'inversibilité dans \mathbb{Z_n}.
+
+\noindent À partir de ce théorème amélioré de Fermat, on déduit cette proposition qui permet le déchiffrement d'un message codé :\\
+\textbf{Proposition :}
+Soit \textbf{d} l'inverse de \textbf{e} modulo \phi(n),
+
+\indent\indent\indent\indent  Si  C \equiv M^{e}[n] \ alors\ M \equiv C^{d}[n]
+
+
+
+\subsection{L'exponentiation rapide modulaire:}
+\noindent L'exponentiation rapide est utilisée pour calculer des puissances modulo n. Pour manipuler des entiers ayant des dizaines, voir des centaines de chiffres, cette methode  rapide et efficace sera utilisé dans RSA pour chiffrer et déchiffrer les messages. \\
+
+\noindent\textbf{Exemple:}
+Appliquons cette methode sur l'exemple 40^{13} (mod\ 85)\\
+\ L'idée\ est\ de\ seulement\ calculer\ 40, 40^{2}, 40^{4}, 40^{8},...\\ et\ de\ reduire\ modulo\ n\ à\ chaque\ fois \
+On\ remarque\ que\ 13 = 8 + 4 + 1\ donc: 
+
+40^{13} =  40^{1} \times 40^{4} \times 40^{8}
+
+\noindent Calculons donc les 40^{2^{i}} (mod\ 85): \\
+\indent \indent \indent \indent 40 \equiv 40 (mod\ 85)\\
+\indent \indent \indent \indent 40^{2} = 1600 \equiv 70 (mod\ 85)\\ 
+\indent \indent \indent \indent 40^{4} = (40^{2})^{2} \equiv 70^{40} \equiv 4900 \equiv 55\ (mod\ 85)\\ 
+\indent \indent \indent \indent 40^{8} = (40^{4})^{2} \equiv 55^{2} \equiv 3025 \equiv 50 (mod\ 84)\\
+40^{13} \equiv 40^{8 + 4 + 1} \equiv 40^{8} \times 40^{4} \equiv 40 \equiv 50 \times 55 \times 40 \equiv 10 (mod\ 85)
+
+
+\section{Algorithme de RSA:}
+\noindent\textbf{Remarque:} Afin de simplifier les calcules, les exemples seront illustrés avec des petits nombres, cependant, en pratique le systhème RSA ne manipule que des grands nombres (centaines de chiffres voir mille). 
+
+
+\subsection{Fonctionnement et principe de RSA:}
+
+\indent L'algorithme RSA est constitué de cinq parties essentielles: la génération des clés, distribution de la clé publique , le chiffrement et le déchiffrement du message et enfin la signature numérique qui permet d'identifer l'émetteur. Le message doit étre numérisé, autrement dit, l'emeteur transforme son text en nombres ( chaque lettre sera représentée par le numero de son ordre alphbétique par exemple, son code ASCII ...) 
+
+Admettant qu'une entité \textbf{B} souhaite envoyer un message secret à l'entité \textbf{A}, alors le protocole sera comme suit:\\
+
+\indent 1- \textbf{A} prépare une clé publique qui sera mise à la disposition de tout autre utilisateur, ainsi qu'une clé privée qui doit rester secte.\\
+\indent 2- \textbf{B} numérise d'abord  son message \textbf{M} en utilisant l'une des méthodes évoquée précédemment, puis le code en utilisant la clé publique.\\
+\indent 3-\textbf{A} reçoit le message crypté et le déchiffre avec sa clé privée.
+
+\subsubsection{Calcul de la clé publique et de la clé privée :}
+\noindent\textbf{Choix de deux nombres premier assez grands:}
+
+L'utilisateur \textbf{A} effectue ces calcules secretement:
+
+- Choisir deux nombres premiers p et q (assez grands dans la pratique).
+
+- Calcule leur produit \textbf{\color{red} n=p.q}
+
+- Calcule la fonction d'Euler \textbf{\phi(n)= (p-1)(q-1)}\\
+La factorisation \ de\ \phi(n)\ ne\ sera\ possible\ que\ si\ l'on\ connais\ les\ facteurs\ de\ \textbf{n}\\
+
+
+\noindent\textbf{Exemple :}\\
+\circ p = 37\ et\ q = 43\\
+\circ n = 37 \times 43 = 1591\\
+\circ \phi(n) = (37 - 1)\times (43 - 1 )= 36 \times 42 = 1512\\
+
+\noindent\textbf{Choix d’un exposant et calcul de son inverse:}\\
+\normalfont 
+L'entité \textbf{A} continue :
+
+- Choisir un exposant \textbf{ e} tel que PGCD(e, \phi (n)) =1
+
+- Calculer l'inverse \textbf{d} de e modulo \phi(n), tel\ que\ d\ \times e \equiv 1[\phi(n)]. 
+
+(Cela se fait en utilisant l'algorithme d'Euclide étendu.) \\
+\textbf{Exemple :} \\
+\circ PGCD(e,\phi(n)) = 1, \implies  PGCD(e,1512)=1\\
+\circ E =\{11,13,19,23,887,895...\} (Possibilités\ verifiant\ PGCD(e,1512)=1.)\\
+\circ On\ choisit\ un\ e \in E\ \\
+\circ e = 23\\
+\circ d \times e \equiv 1[\phi(n)] ( d\ inverse\ de\ e) \implies d\times23 \equiv 1[1512]\\
+\circ d = 263 \\
+\textbf{Clé publique :} 
+
+La clée publique est constituée des deux nombres \textbf{n} et \textbf{e}. L'entité A la met à la disposition de tout autre utilisateur, leur permettant de crypter les données envoyées . \\
+\noindent\textbf{Exemple :}\\
+clé publique est (n , e) = (1591,23)
+
+\noindent \textbf{Clé privée :}
+
+Le créateur des clés garde secretement sa clé privée constituée du nombre \textbf{d} qui permet  le déchiffrement du message codé par la clé publique.
+Il détruit les nombres \textbf{p}, \textbf{q} et \textbf{\phi(n)}\ qui\ ne\ sont\ plus\ utile.\\
+\noindent\textbf{Exemple :}\\
+cle\ privée\ est\  d= 263
+
+\subsubsection{Chiffrement du message: }
+\normalfont
+Une entité \textbf{B} souhaite envoyer un message secret \textbf{m} au destinataire \textbf{A}. Pour cela, elle:\\
+1- Numérise d'abord son texte \textbf{m} en remplçant chaque lettre par son rang alphabetique (d'autre méthodes de numérisation sont possibles).\\
+2- Découpe le message numérisé en blocs de même taille de sorte que chaque bloc \textbf{M} soit inferieur à \textbf{n}. Cette étape est nécessaire car plus le bloc est assez long, plus il est difficile de l'attaquer. \\
+3- L'entité \textbf{B} partage le processus de découpage, ainsi que la methode choisi pour la numérisation du message avec l'entité \textbf{A}  
+
+\noindent \textbf{Message :}
+
+\noindent Le message est un entier  \textbf{M} tel que  0 \le M < n.
+
+
+\noindent3- L'utilisateur \textbf{B} récupère la clé publique \textbf{(n,e)} de \textbf{A} avec laquelle il va chiffrer chaque bloc \textbf{M} de son message numérisé  grace à l'algortithme d'exponotiation rapide comme suit : 
+
+
+\indent\indent\indent\indent\indent\indent\indent\indent\indent
+\textbf{C \equiv M^{e} [n]}.
+
+\normalfont
+\noindent 4- Le message codé composé des blocs \textbf{C} sera ensuite transmit à l'entité \textbf{A}.
+\noindent\textbf{Exemple :}\\
+\circ m = RSA \implies 18\ 19\ 01\\
+\circ Decoupage\ en\ morceaux\ de\ meme\ taille\ 3\ \implies M = 181\ 901\\
+\circ Chiffrement\ des\ blocs\\
+\indent C_{1} \equiv (181)^{23} [1591] = 382 \\
+\indent C_{2} \equiv (901)^{23} [1591] = 520\\
+\indent On\ obtient\ le\ code\ C = 382520
+
+ 
+
+\subsubsection{Déhiffrement du message: }
+\indent L'entité \textbf{A} reçoit le message chiffré envoyé par l'utilisateur \textbf{B}. Pour le décrypter, elle utilise sa clé privée \textbf{d}, ainsi que l'algorithme de  l'exponentiation rapide. À l'aide de la proposition du Théorème de Fermat amélioré évoquée précedemment, l'entité \textbf{A} retrouve finalement le message \textbf{M}:  \\
+
+\indent\indent\indent\indent\indent\indent\indent\indent\indent
+M \equiv C^{d} [n]
+\newpage
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{figure3.PNG}
+\caption{Fonctionnement du système RSA}
+\label{fig:figure2}
+\end{figure}
+
+\noindent \textbf{Exemple:}\\
+Déchiffrer le code C=  382520\\
+\circ Découpage\ en\ morceaux\ de\ meme\ taille\ 3\ \implies 382\ 520\\
+\circ Déchiffrement\ du\ code\ C:\\
+\indent M_{1} \equiv (382)^{263} [1591] = 181\\
+\indent M_{2} \equiv (520)^{263} [1591] = 901\\
+\indent Le\ résultat\ est : 181901\\
+\circ Découpage\ en\ morceaux\ de\ taille\ 2\ pour\ reconstruire\ le\ message\ 18\ 19\ 01 \implies R\ S\ A.
+
+\subsubsection{La signature RSA: }
+\indent La signature électronique a le même rôle que la signature manuscrite utilisée quotidiennement dans les documents officiels. Il s'agit d'un procédé assurant l'authenticité du signataire ( auteur),  autrement dit: garantir que l'information provient de la bonne source, ainsi que l'intégrité de son document, c'est à dire que ce dérnier n'a pas été modifié ou altéré par d'autres entités non autorisées ou inconnues.\\ 
+Comme tout les procédés de signature numérique, le procédé de la signature RSA est composé d'un \textbf{algorithme de signature} et d'un \textbf{algorithme de vérification}. L'expiditeur \textbf{A} signe son message \textbf{M} suivant l'algorithme secret de la fonction \textbf{S}, ensuite le recepteur \textbf{B} vérifie le résultat \textbf{R=S(M)} grace à l'algorithme publique de la fonction \textbf{ver} qui retourne \textbf{VRAI} si R est une authentique signature de \textbf{M}, \textbf{FAUX} si non.
+\newpage
+\noindent Soit p , q nombres premiers et n=p.q, (n,e), d sont les clés publique et privée ( respictivement) crée par l'algorithme RSA.
+
+-Pour signer son message, l'entité \textbf{A} utilise la fonction suivante: \\
+\indent\indent\indent\indent\indent\indent\indent\indent\indent
+S(M) \equiv M^{d} [n].
+
+- Pour\ identifier\ l'expediteur,\ l'entité\ \textbf{B}\ utilise\ la\ fonction\ de\ vérification\ associée: \\
+
+\indent\indent\indent\indent\indent\indent\indent\indent
+ver(M, R)= 
+\begin{cases}
+Vrai\ si\   M\ \equiv R^{e} [n] \\
+Faux\ si\ M \not\equiv R^{e} [n]\\
+\end{cases}
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{sin_.png}
+\caption{Fonctionnement de la signature RSA}
+\label{fig:figure2}
+\end{figure}
+\newpage 
+
+\subsection {Réalisation :}
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{figure4.PNG}
+\caption{L'interface graphique de l'application}
+\label{fig:figure2}
+\end{figure}
+
+L'application permet de chiffrer et de déchiffrer un message écrit en lettre de A à Z sans le caractères "espace".
+
+L'utilisateur choisit deux nombres premiers assez grands (exemple dans le programme >30 ) "P", "Q", Puis appuie sur le boutton "Calculer", si le programme ne fait rien : l'utilisateur doit vérifier que les nombre choisit sont premiers et >30.
+
+Le programme calcule et choisit une clé publique parmi plusieurs possibilitées "e", ensuite calcule la clé privé "d".
+
+Si on veut chiffrer un message: on le tappe sur le champ de saisie " M ", le message doit contenir que des lettres ( peu importe la casse), le message chiffré s'affiche sur " C"
+
+Si on veut déchiffrer un message, on le tappe sur le champ de saisie "C", tout en vérifiant que les clé avec lesquelles le message a été codé sont identiques, ensuite on appuie sur "Déchiffrer", on aura le message déchiffré version numerisée ( méthode :ordre de l'alphabet ) dans " M".
+
+Le boutton "Effacer" permet d'effacer tout les champs déja remplis.
+
+Quant au boutton "Aide", affiche une petite fenetre expliquant quelque étapes de l'opération "chiffrer-déchiffrer"
+
+\begin{figure}[h]
+\includegraphics[width=1\textwidth]{aide.PNG}
+\caption{Fenêtre d'aide}
+\label{fig:figure2}
+\end{figure}
+
+\newpage
+\section{Sécurité et robustesse de RSA:}
+La sécurité du système RSA repose principalement sur la difficultée de la factorisation du nombre \textbf{n} en deux nombres premiers \textbf{p} et \textbf{q}, ainsi que le temps nécessaire pour effectuer cette opération qui croit exponentiellement en fonction de la longueur de \textbf{n}. En effet, si un utilisateur réussit à factoriser \textbf{n} il en déduira ensuite O(n) et donc calculera facilement la clé secrète \textbf{d}. La confiance accordée au système RSA est dû aux échecs de toutes tentatives pour le détruire. Neanmoins, ces échecs redondantes ont conduit à la formulation des nouvelles recommandations pour le choix des paramètres \textbf{p} et \textbf{q}. Par exemple, les experts recommandent l'usage des nombres \textbf{n} entre 1024 et 2048 bits dans le cas de donneés ayant une grande importance. \\
+\indent La fameuse factorisation reste toujours trés difficile
+et lente même s'il existe des méthodes plus efficaces que les méthodes classiques (test de primalité de Fermat, crible d'Erastothène vu ci-dessus, etc ...). 
+
+\indent Les meuilleurs algorithmes de factorisation actuels peuvent factoriser des nombres jusqu'à 230 chiffres en plusieurs mois de calculs en utilisant des centaines de machines très puissantes. Cela implique que plus le nombre est grand, plus le temps du calcul des facteurs est important, d'où le conseil des experts de choisir des nombres assez grands. En appliquant les méthodes connus à ce jour, il semble que la factorisation des nombres à 1000 chiffres restera impossible, ce qui met en évidence  la robustesse du systeme RSA. Parmis les fameux algorithmes qui ont essayé de briser ce système depuis son apparition, la crible algébrique, l'attaque de  Wiener..\\
+
+\indent L'utilisation de nombres assez grands rend RSA plus sûr et réduit les risques d'attaques, en revanche, le procédé du chiffrement et déchiffrement, etant basé sur ces grands nombres, devient trés lent et compliqué quand il s'agit de transmettre des informations à taille considèrable. Pour cela, dans la pratique on s'en sert le plus souvent de transmettre des clés  d'autre système plus rapide (symetriques) servant à déchiffrer ces informations.
+
+
+
+\newpage
+\\
+\section{Bibliographie}
+\noindent DELAHAYE, Jean Paul. La Cryptographie RSA Vings Ans Après . Jan. 2000. http://www.lifl.fr/~jdelahay/dnalor/RSA.pdf \\
+\\
+BODIN, Arnaud et RECHER, François. Cryptographie. Exo7 \\
+http://exo7.emath.fr/cours/ch_crypto.pdf\\
+\\
+Système RSA\ www.cryptage.org/rsa.html\\
+\\
+BUCHMANN, Johannes\ La Factorisation\ Des\ Grands\ Nombres. Sept. 1998.\\ https://www.apprendre-en-ligne.net/crypto/rsa/251_088_096.pdf\\
+\\
+VIGOUREUX, Pierre. Libertés\ individuelles\ et\ codes\ secrets. \ Mars\ 2006\\
+\\
+STINSON, Douglas. CRYPTOGRAPHIE. Théorie et pratique. 2000
+
+\end{document}
